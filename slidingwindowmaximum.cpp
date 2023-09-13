@@ -169,7 +169,6 @@ public:
             g[d] = b[i];
         }
         int z ;
-        rebuild(1 , 1 , d);
         for(int i = 0 ; i < k ; i ++){
            z = binarysearch(nums[i]);
            update(1 , 1 , d , z , 0);
@@ -183,6 +182,10 @@ public:
             update(1 , 1 , d , z , 0);
             
             res.push_back(st[1].val);
+        }
+        for(int i = nums.size() - k ; i  < nums.size() ; i ++){
+             z = binarysearch(nums[i]);
+            update(1 , 1 , d , z , 1);
         }
         return res;   
     }
