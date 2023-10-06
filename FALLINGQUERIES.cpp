@@ -148,12 +148,6 @@ ll get(int id , int l , int r , int u , int v){
     }
     return max(get(id << 1 , l , mid , u , v) , get(id << 1 | 1 , mid + 1 , r , u , v));
 }
-int binarysearch_segtree_left(int id , int l , int r , int u , int v , ll val){
-    if(l > v || r < u){
-
-    }
-
-}
 int binarysearch(int val){
     int l = 1 , r = cnt;
     while(l <= r){
