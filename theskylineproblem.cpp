@@ -24,9 +24,6 @@ long long GCD(ll a , ll b){
 const ll MAXN = 1e4 + 7;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 7;
-struct item{
-    ll le , ri ,he;
-};
 
 struct sweepline{
     ll h , point;
@@ -51,7 +48,6 @@ sweepline q[2 * MAXN];
 ll b[MAXN];
 int n , d;
 int posi[MAXN];
-item bd[MAXN];
 
 int binarysearch(ll val){
     int l = 1 , r = n;
@@ -111,15 +107,12 @@ public:
     vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
         n = buildings.size() ;
         for(int i = 0 ; i < n ; i ++){
-            bd[i + 1].le = buildings[i][0];
-            bd[i + 1].ri = buildings[i][1];
-            bd[i + 1].he = buildings[i][2];
             b[i + 1] = buildings[i][2];
-            q[i + 1].h = bd[i + 1].he;
-            q[i + 1].point = bd[i + 1].le;
+            q[i + 1].h = buildings[i][2];;
+            q[i + 1].point = buildings[i][0];
             q[i + 1].type = 0;
-            q[i + 1 + n].h = bd[i + 1].he;
-            q[i + 1 + n].point = bd[i + 1].ri;
+            q[i + 1 + n].h = buildings[i][2];;
+            q[i + 1 + n].point = buildings[i][1];
             q[i + 1 + n].type = 1;
 
         }
@@ -135,10 +128,12 @@ public:
         rebuild(1  , 1 , d);
         sort(q + 1 , q + 2 * n + 1 , cmp);
         vector<vector<int>> ans;
+        vector<int> cur;
+        int idx;
         for(int i = 1 ; i <=2 * n ; i ++){
             // cout << q[i].point << " " << q[i].h << " " << q[i].type << '\n';
             if(q[i].type == 0){
-                int idx = i;
+                idx = i;
                 update(1 , 1 , d , binarysearch(q[i].h) , q[i].h , 1);
                 while(idx + 1 <=2 * n && q[idx + 1].point == q[i].point && q[idx + 1].type == 0){
                     idx ++;
@@ -146,7 +141,7 @@ public:
                 }
                 i = idx;
             }else{
-                int idx = i;
+                idx = i;
                 update(1 , 1 , d , binarysearch(q[i].h) , q[i].h , -1);
                 while(idx + 1 <=  2 * n && q[idx + 1].point == q[i].point && q[idx + 1].type == 1){
                     idx ++;
@@ -155,14 +150,14 @@ public:
                 i = idx;
             }
             if(ans.size()){
+                cur.clear();
                 if(ans[ans.size() - 1][1] != st[1].val){
-                    vector<int> cur;
                     cur.push_back(q[i].point);
                     cur.push_back(st[1].val);
                     ans.push_back(cur);
                 }
             }else{
-                vector<int> cur;
+                cur.clear();
                 cur.push_back(q[i].point);
                 cur.push_back(st[1].val);
                 ans.push_back(cur);
@@ -174,8 +169,8 @@ public:
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
-    freopen("new.inp" , "r" , stdin);
-    freopen("new.out" , "w" , stdout);
+    // freopen("new.inp" , "r" , stdin);
+    // freopen("new.out" , "w" , stdout);
     vector<vector<int>>v;
     for(int i = 0 ; i <= 2; i ++){
         vector<int> cur;
