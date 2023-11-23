@@ -106,10 +106,10 @@ vector<item> canh;
 vector<int>adj[MAXN];
 int n , m;
 int depth[MAXN] , cnt[MAXN] , chainidx[MAXN] , chainhead[MAXN] , posinbase[MAXN];
-int T[MAXN][18];
+int T[MAXN][18] , par[MAXN];
 int nchain , nbase;
 int findpar(int u){
-    return cnt[u] < 0 ?  u : cnt[u] = findpar(cnt[u]);
+    return par[u] < 0 ?  u : par[u] = findpar(par[u]);
 }
 
 bool join(int u , int v){
@@ -118,11 +118,11 @@ bool join(int u , int v){
     if(u == v){
         return false;
     }
-    if(cnt[u] > cnt[v]){
+    if(par[u] > par[v]){
         swap(u , v);
     }
-    cnt[u] += cnt[v];
-    cnt[v] = u;
+    par[u] += par[v];
+    par[v] = u;
     return true;
 }
 
@@ -203,7 +203,9 @@ void update(int id , int l , int r , int u , int v){
     mid >>= 1;
     update(id << 1 , l , mid , u , v);
     update(id << 1 | 1 , mid + 1 , r , u , v);
-    st[id].val = st[id << 1].val + st[id << 1 | 1].val;
+    if(st[id].val != 0){
+        st[id].val = st[id << 1].val + st[id << 1 | 1].val;
+    }
 }
 
 int get(int id , int l , int r , int u , int v){
@@ -255,6 +257,7 @@ int findup(int u , int v){
         if(uchain == vchain){
             sum += get(1 , 1 , n ,posinbase[v] + 1 , posinbase[u]);
             update(1 , 1 , n , posinbase[v] + 1 , posinbase[u]);
+            
             return sum;
         }
         sum += get(1 , 1 , n , posinbase[chainhead[uchain]] , posinbase[u]);
@@ -277,8 +280,10 @@ signed main() {
         int u , v;
         canh.clear();
         for(int i = 1 ; i <= n ; i ++){
-            cnt[i] = -1;
+            cnt[i] = 0;
+            par[i] = -1;
             adj[i].clear();
+            chainhead[i] = 0;
         }
         int num = n;
         for(int i = 1 ; i <= m ; i ++){
@@ -298,7 +303,7 @@ signed main() {
         HLD(1 , 0);
         build(1 , 1 , n);
         for(int i = 1 ; i <= n ; i ++){
-            cnt[i] = -1;
+            par[i] = -1;
         }
         int bridge = 0;
         for(int i = 1 ; i <= m ; i ++){
@@ -306,9 +311,7 @@ signed main() {
                 bridge ++;
             }else{
                 int LCA = lca(canh[i - 1].u , canh[i - 1].v);
-                if(num == 1){
-                    bridge -= findup(canh[i - 1].u , LCA) + findup(canh[i - 1].v , LCA);
-                }
+                bridge -= findup(canh[i - 1].u , LCA) + findup(canh[i - 1].v , LCA);
             }
             cout << bridge << '\n';
         }
