@@ -276,7 +276,7 @@ signed main() {
     cin >> t;
     int cur = t;
     while(t--){
-        cin >> n >> m;
+        read(n); read(m);
         int u , v;
         canh.clear();
         for(int i = 1 ; i <= n ; i ++){
@@ -287,7 +287,7 @@ signed main() {
         }
         int num = n;
         for(int i = 1 ; i <= m ; i ++){
-            cin >> u >> v;
+            read(u); read(v);
             u ++;
             v ++;
             if(join(u , v)){
@@ -313,7 +313,8 @@ signed main() {
                 int LCA = lca(canh[i - 1].u , canh[i - 1].v);
                 bridge -= findup(canh[i - 1].u , LCA) + findup(canh[i - 1].v , LCA);
             }
-            cout << bridge << '\n';
+            write(bridge);
+            putchar('\n');
         }
     }
     return 0;    
