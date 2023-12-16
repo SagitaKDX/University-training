@@ -1,3 +1,3 @@
 # University-training
 University training 
-:> some funny problem
+Prepare for College olympic!
