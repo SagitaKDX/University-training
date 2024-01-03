@@ -28,7 +28,7 @@ int n , k;
 ll bit[MAXN][200];
 int a[MAXN], b[MAXN];
 void update(int idx ,int mask ,ll val){
-    for(  ;idx <= MAXN - 7 ; idx += idx & (-idx)){
+    for(  ;idx <= MAXN - 6 ; idx += idx & (-idx)){
         bit[idx][mask] += val;
         bit[idx][mask] %= MOD;
     }
@@ -71,6 +71,6 @@ int main(){
             }
         }
     }
-    cout << get(MAXN - 7 ,(1 << k) - 1) % MOD;
+    cout << get(MAXN - 6 ,(1 << k) - 1) % MOD;
     return 0;
 }
